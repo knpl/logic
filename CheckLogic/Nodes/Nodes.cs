@@ -1,11 +1,11 @@
 namespace CheckLogic {
-    abstract class Expression : Visitable {
+    public abstract class Expression : Visitable {
         public override void accept(Visitor visitor) {
             visitor.visit(this);
         }
     }
 
-    class Proposition : Expression {
+    public class Proposition : Expression {
 
         public string Label { get; }
 
@@ -18,7 +18,7 @@ namespace CheckLogic {
         }
     }
 
-    abstract class BinaryOperator : Expression {
+    public abstract class BinaryOperator : Expression {
         public Expression LeftHandSide { get; }
         public Expression RightHandSide { get; }
 
@@ -32,7 +32,7 @@ namespace CheckLogic {
         }
     }
 
-    class Disjunction : BinaryOperator {
+    public class Disjunction : BinaryOperator {
         public Disjunction(Expression lhs, Expression rhs) : base(lhs, rhs) {
         }
 
@@ -41,7 +41,7 @@ namespace CheckLogic {
         }
     }
 
-    class Conjunction : BinaryOperator {
+    public class Conjunction : BinaryOperator {
         public Conjunction(Expression lhs, Expression rhs) : base(lhs, rhs) {
         }
 
@@ -50,7 +50,7 @@ namespace CheckLogic {
         }
     }
 
-    class RightImplication : BinaryOperator {
+    public class RightImplication : BinaryOperator {
         public RightImplication(Expression lhs, Expression rhs) : base(lhs, rhs) {
         }
 
@@ -59,7 +59,7 @@ namespace CheckLogic {
         }
     }
 
-    class LeftImplication : BinaryOperator {
+    public class LeftImplication : BinaryOperator {
         public LeftImplication(Expression lhs, Expression rhs) : base(lhs, rhs) {
         }
 
@@ -68,7 +68,7 @@ namespace CheckLogic {
         }
     }
 
-    class BiImplication : BinaryOperator {
+    public class BiImplication : BinaryOperator {
         public BiImplication(Expression lhs, Expression rhs) : base(lhs, rhs) {
         }
 
@@ -77,7 +77,7 @@ namespace CheckLogic {
         }
     }
 
-    class Negation : Expression {
+    public class Negation : Expression {
 
         public Expression Operand { get; }
         public Negation(Expression operand) {
@@ -85,6 +85,51 @@ namespace CheckLogic {
         }
 
         public override void accept(Visitor visitor) {
+            visitor.visit(this);
+        }
+    }
+
+    public class ForAll : Expression {
+        public string Variable { get; }
+        public Expression Operand { get; }
+
+        public ForAll(string variable, Expression operand) {
+            Variable = variable;
+            Operand = operand;
+        }
+
+        public override void accept(Visitor visitor)
+        {
+            visitor.visit(this);
+        }
+    }
+
+    public class ThereExists : Expression {
+        public string Variable { get; }
+        public Expression Operand { get; }
+
+        public ThereExists(string variable, Expression operand) {
+            Variable = variable;
+            Operand = operand;
+        }
+
+        public override void accept(Visitor visitor)
+        {
+            visitor.visit(this);
+        }
+    }
+
+    public class Predicate : Expression {
+        public string Name { get; }
+        public string[] Arguments { get; }
+
+        public Predicate(string name, params string[] arguments) {
+            Name = name;
+            Arguments = arguments;
+        }
+
+        public override void accept(Visitor visitor)
+        {
             visitor.visit(this);
         }
     }

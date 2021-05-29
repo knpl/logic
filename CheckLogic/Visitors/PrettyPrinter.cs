@@ -98,6 +98,23 @@ namespace CheckLogic {
             }
         }
 
+        public override void visit(ForAll forAll)
+        {
+            _buffer.Append($"∀{forAll.Variable}:");
+            forAll.Operand.accept(this);
+        }
+
+        public override void visit(ThereExists thereExists)
+        {
+            _buffer.Append($"∃{thereExists.Variable}:");
+            thereExists.Operand.accept(this);
+        }
+
+        public override void visit(Predicate predicate)
+        {
+            _buffer.Append($"{predicate.Name}({String.Join(',', predicate.Arguments)})");
+        }
+
         private void left(
                 BinaryOperator node,
                 Precedence precedence,
@@ -158,6 +175,7 @@ namespace CheckLogic {
             node.accept(_precedence);
             return _precedence.Result;
         }
+
     }
 
     class PrecedenceVisitor : Visitor
@@ -207,6 +225,21 @@ namespace CheckLogic {
         public override void visit(BinaryOperator binaryOperator)
         {
             throw new NotImplementedException();
+        }
+
+        public override void visit(ForAll forAll)
+        {
+            Result = Precedence.Lowest;
+        }
+
+        public override void visit(ThereExists thereExists)
+        {
+            Result = Precedence.Lowest;
+        }
+
+        public override void visit(Predicate predicate)
+        {
+            Result = Precedence.Highest;
         }
     }
 }
