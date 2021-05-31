@@ -20,7 +20,7 @@ namespace CheckLogic {
         RightAssociative
     }
 
-    class PrettyPrintVisitor : Visitor {
+    public class PrettyPrintVisitor : Visitor {
         private StringBuilder _buffer;
         private PrecedenceVisitor _precedence;
 
@@ -32,6 +32,11 @@ namespace CheckLogic {
         public override string ToString()
         {
             return _buffer.ToString();
+        }
+
+        public void Clear()
+        {
+            _buffer.Clear();
         }
 
         public override void visit(Expression expression)
